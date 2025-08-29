@@ -54,12 +54,12 @@ class OdometryConverter(Node):
                 ('velocity_rolling_window_size', 5), # 속도 계산을 위한 윈도우 크기
                 ('transform_tolerance', 0.1),        # transform 허용 시간 차이
                 ('scale_factor', 1.0),               # 좌표계 크기 조절 팩터
-                ('use_relative_orientation', False), # 상대방향 사용 여부 (True: 상대, False: 절대) - 디버깅을 위해 절대방향으로 임시 변경
+                ('use_relative_orientation', True),  # 상대방향 사용 여부 - base_link는 플레이어 기준이어야 함
                 ('use_minecraft_axis_conversion', True), # Minecraft 좌표계를 ROS 좌표계로 변환 여부
-                ('yaw_conversion_mode', 2)               # Yaw 변환 모드 (1,2,3,4 - 실험적 테스트용)
+                ('yaw_conversion_mode', 1)               # Yaw 변환 모드 (1,2,3,4 - 실험적 테스트용)
             ]
         )
-        yaw_conversion_mode
+
         # 매개변수 값 읽기 - 선언된 매개변수들을 인스턴스 변수로 저장
         self.odom_frame_id = self.get_parameter('odom_frame_id').get_parameter_value().string_value
         self.base_frame_id = self.get_parameter('base_frame_id').get_parameter_value().string_value
@@ -173,7 +173,8 @@ class OdometryConverter(Node):
             self.origin_pose.position.z = msg.position.z
             
             # 원점 방향도 좌표축 변환 적용 (상대방향 계산에 필요)
-            if self.use_minecraft_axis_conversion:
+            current_use_conversion = self.get_parameter('use_minecraft_axis_conversion').get_parameter_value().bool_value
+            if current_use_conversion:
                 self.origin_pose.orientation = self.convert_minecraft_to_ros_orientation(msg.orientation)
                 self.get_logger().info(f'원점이 설정되었습니다 (좌표축 변환됨): ({msg.position.x:.2f}, {msg.position.y:.2f}, {msg.position.z:.2f})')
             else:
@@ -183,9 +184,9 @@ class OdometryConverter(Node):
             # 정적 world -> map transform 발행 (첫 pose 기준)
             self.publish_world_to_map_transform()
             
-            # 정적 map -> odom transform 발행 RE-ENABLED - Cartographer pure mapping mode로 변경됨
+            # 정적 map -> odom transform 발행 - Cartographer TF 발행 완전 비활성화됨
             self.publish_map_to_odom_transform()
-            self.get_logger().info('map → odom TF 발행 활성화: Cartographer는 이제 mapping만 수행')
+            self.get_logger().info('TF 구조 완료: world→map→odom→base_link, Cartographer는 맵만 생성')
         
         # 원점을 기준으로 한 상대적 pose 계산 (현재 구현)
         direct_pose = Pose()
@@ -194,13 +195,15 @@ class OdometryConverter(Node):
         direct_pose.position.y = (msg.position.y - self.origin_pose.position.y) * self.scale_factor
         direct_pose.position.z = (msg.position.z - self.origin_pose.position.z) * self.scale_factor
         
-        # 방향 설정 - 절대방향 vs 상대방향 선택 가능 (매개변수로 제어)
-        if self.use_relative_orientation:
+        # 방향 설정 - 절대방향 vs 상대방향 선택 가능 (실시간 매개변수 읽기)
+        current_use_relative = self.get_parameter('use_relative_orientation').get_parameter_value().bool_value
+        if current_use_relative:
             # 상대방향 사용: 원점 기준으로 한 상대적 회전
             # 예: 원점에서 북쪽(0°)을 보고 있었다면, 현재 동쪽을 보면 +90° 회전으로 표현
             
             # 현재 방향도 좌표축 변환 적용 (원점과 동일한 좌표계에서 계산)
-            if self.use_minecraft_axis_conversion:
+            current_use_conversion = self.get_parameter('use_minecraft_axis_conversion').get_parameter_value().bool_value
+            if current_use_conversion:
                 current_orientation = self.convert_minecraft_to_ros_orientation(msg.orientation)
             else:
                 current_orientation = msg.orientation
@@ -218,7 +221,8 @@ class OdometryConverter(Node):
             
         else:
             # 절대방향 사용: Minecraft 월드 좌표계의 방향 사용
-            if self.use_minecraft_axis_conversion:
+            current_use_conversion = self.get_parameter('use_minecraft_axis_conversion').get_parameter_value().bool_value
+            if current_use_conversion:
                 # Minecraft 좌표계를 ROS 좌표계로 변환 (Y축 회전 → Z축 회전)
                 direct_pose.orientation = self.convert_minecraft_to_ros_orientation(msg.orientation)
                 # 변환 후 장점:
@@ -244,14 +248,18 @@ class OdometryConverter(Node):
         if self.debug_counter % 10 == 0:  # 10번에 1번만 로그 출력
             current_yaw = self.quaternion_to_yaw(direct_pose.orientation)
             minecraft_yaw = self.quaternion_to_yaw(msg.orientation)
-            conversion_status = "축 변환됨" if self.use_minecraft_axis_conversion else "변환 안됨"
+            current_use_conversion = self.get_parameter('use_minecraft_axis_conversion').get_parameter_value().bool_value
+            conversion_status = "축 변환됨" if current_use_conversion else "변환 안됨"
             
             # 각도를 도단위로도 표시
             minecraft_yaw_deg = math.degrees(minecraft_yaw)
             current_yaw_deg = math.degrees(current_yaw)
             
+            # 실시간 매개변수 읽기
+            current_mode = self.get_parameter('yaw_conversion_mode').get_parameter_value().integer_value
+            
             self.get_logger().info(f'[DEBUG] === 좌표계 변환 디버그 ===')
-            self.get_logger().info(f'[DEBUG] 변환 모드: {self.yaw_conversion_mode} ({conversion_status})')
+            self.get_logger().info(f'[DEBUG] 변환 모드: {current_mode} ({conversion_status})')
             self.get_logger().info(f'[DEBUG] Minecraft yaw: {minecraft_yaw:.3f}rad ({minecraft_yaw_deg:.1f}°)')
             self.get_logger().info(f'[DEBUG] ROS odom yaw: {current_yaw:.3f}rad ({current_yaw_deg:.1f}°)')
             self.get_logger().info(f'[DEBUG] 변환 차이: {current_yaw_deg - minecraft_yaw_deg:.1f}°')
@@ -259,7 +267,7 @@ class OdometryConverter(Node):
             self.get_logger().info(f'[DEBUG] ROS quat: x={direct_pose.orientation.x:.3f}, y={direct_pose.orientation.y:.3f}, z={direct_pose.orientation.z:.3f}, w={direct_pose.orientation.w:.3f}')
             
             # 예상되는 방향 설명
-            if self.use_minecraft_axis_conversion:
+            if current_use_conversion:
                 minecraft_direction = self.get_direction_description(minecraft_yaw)
                 ros_direction = self.get_direction_description(current_yaw)
                 self.get_logger().info(f'[DEBUG] Minecraft 방향: {minecraft_direction} → ROS 방향: {ros_direction}')
@@ -368,14 +376,16 @@ class OdometryConverter(Node):
         # Minecraft: 북쪽=0°, 동쪽=-90°, 남쪽=±180°, 서쪽=+90° (Y축 중심, 시계방향)
         # ROS: 앞=0°, 왼쪽=+90°, 뒤=±180°, 오른쪽=-90° (Z축 중심, 반시계방향)
         
-        # 실시간 테스트를 위한 여러 변환 모드
-        if self.yaw_conversion_mode == 1:
+        # 실시간 테스트를 위한 여러 변환 모드 (매번 매개변수 읽기)
+        current_mode = self.get_parameter('yaw_conversion_mode').get_parameter_value().integer_value
+        
+        if current_mode == 1:
             ros_yaw = -minecraft_yaw  # 방향 반전
-        elif self.yaw_conversion_mode == 2:
+        elif current_mode == 2:
             ros_yaw = minecraft_yaw + math.pi/2  # +90도
-        elif self.yaw_conversion_mode == 3:
+        elif current_mode == 3:
             ros_yaw = minecraft_yaw - math.pi/2  # -90도
-        elif self.yaw_conversion_mode == 4:
+        elif current_mode == 4:
             ros_yaw = minecraft_yaw + math.pi    # +180도
         else:
             ros_yaw = minecraft_yaw  # 변환 없음 (기본값)

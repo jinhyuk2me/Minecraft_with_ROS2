@@ -8,7 +8,7 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "base_link", 
-  published_frame = "base_link",  -- Pure mapping: publish base_link directly (no localization)
+  published_frame = "cartographer_dummy",  -- DISABLE: Publish to dummy frame (not connected to main TF tree)
   odom_frame = "odom",
   provide_odom_frame = false,  -- CRITICAL: Don't publish odom frame TF
   publish_frame_projected_to_2d = false,
@@ -64,10 +64,7 @@ POSE_GRAPH.optimize_every_n_nodes = 90  -- Enable pose graph optimization every 
 POSE_GRAPH.constraint_builder.sampling_ratio = 0.003  -- Enable loop closure constraints  
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.55  -- Enable global localization
 
--- PURE MAPPING MODE: Disable localization corrections
-MAP_BUILDER.pose_graph_odometry_motion_filter.max_time_seconds = 99999.0  -- Effectively disable odometry corrections
-MAP_BUILDER.pose_graph_odometry_motion_filter.max_distance_meters = 99999.0
-MAP_BUILDER.pose_graph_odometry_motion_filter.max_angle_radians = 99999.0
+-- PURE MAPPING MODE: 잘못된 파라미터 제거됨 (위의 provide_odom_frame = false로 충분)
 
 -- Submap parameters for Minecraft environment
 TRAJECTORY_BUILDER_3D.submaps.high_resolution = 0.1
