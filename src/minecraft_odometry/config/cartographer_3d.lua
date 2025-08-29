@@ -8,7 +8,7 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "base_link", 
-  published_frame = "cartographer_dummy",  -- DISABLE: Publish to dummy frame (not connected to main TF tree)
+  published_frame = "base_link",
   odom_frame = "odom",
   provide_odom_frame = false,  -- CRITICAL: Don't publish odom frame TF
   publish_frame_projected_to_2d = false,
@@ -29,6 +29,9 @@ options = {
   fixed_frame_pose_sampling_ratio = 1.0,
   imu_sampling_ratio = 1.0,
   landmarks_sampling_ratio = 1.0,
+
+  -- CRITICAL: TF 퍼블리시를 완전히 비활성화하는 설정
+  publish_to_tf = false,
 }
 
 -- Use 3D SLAM with point clouds
