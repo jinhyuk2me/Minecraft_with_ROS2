@@ -1,0 +1,10 @@
+digraph G {
+"player" -> "world"[label=" Broadcaster: Authority undetectable\nAverage rate: 8.298\nBuffer length: 9.52\nMost recent transform: 1756390033.249663\nOldest transform: 1756390023.729572\n"];
+"base_link" -> "player"[label=" Broadcaster: Authority undetectable\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"odom" -> "base_link"[label=" Broadcaster: Authority undetectable\nAverage rate: 10.102\nBuffer length: 9.998\nMost recent transform: 1756390030.124889\nOldest transform: 1756390020.126543\n"];
+"map" -> "odom"[label=" Broadcaster: Authority undetectable\nAverage rate: 127.586\nBuffer length: 10.001\nMost recent transform: 1756390030.12664\nOldest transform: 1756390020.125525\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1756390030.1323159"[ shape=plaintext ] ;
+}->"map";
+}

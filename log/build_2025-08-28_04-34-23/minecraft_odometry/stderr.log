@@ -1,0 +1,6 @@
+CMake Error at cmake_install.cmake:74 (file):
+  file INSTALL cannot find
+  "/workspace/minecraft_ros2/src/minecraft_odometry/minecraft_odometry/pointcloud_republisher.py":
+  No such file or directory.
+
+

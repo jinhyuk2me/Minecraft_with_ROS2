@@ -1,0 +1,9 @@
+digraph G {
+"base_link" -> "player"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"odom" -> "base_link"[label=" Broadcaster: default_authority\nAverage rate: 40.154\nBuffer length: 5.006\nMost recent transform: 1756388054.588264\nOldest transform: 1756388049.582505\n"];
+"player" -> "world"[label=" Broadcaster: default_authority\nAverage rate: 6.335\nBuffer length: 7.893\nMost recent transform: 1756388057.2939\nOldest transform: 1756388049.401293\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1756388054.5998886"[ shape=plaintext ] ;
+}->"odom";
+}

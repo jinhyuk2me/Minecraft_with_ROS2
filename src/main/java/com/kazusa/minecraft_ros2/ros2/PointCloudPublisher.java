@@ -60,7 +60,7 @@ public class PointCloudPublisher extends BaseComposableNode {
     private double minDistance      = 0.05;
     private double maxDistance      = 120.0;
 
-    private final boolean publishTF       = false;
+    private final boolean publishTF       = false;  // Disabled: using static base_link->player transform instead
 
 
     public PointCloudPublisher() {
@@ -382,13 +382,14 @@ public class PointCloudPublisher extends BaseComposableNode {
         TransformStamped transform = new TransformStamped();
         Header tfHeader = new Header();
         tfHeader.setStamp(Time.now());
-        tfHeader.setFrameId("world");
+        tfHeader.setFrameId("player");
         transform.setHeader(tfHeader);
-        transform.setChildFrameId("player");
+        transform.setChildFrameId("world");
 
-        transform.getTransform().getTranslation().setX(pz);
-        transform.getTransform().getTranslation().setY(px);
-        transform.getTransform().getTranslation().setZ(py - 63.0);
+        // Inverse transform: player -> world
+        transform.getTransform().getTranslation().setX(-pz);
+        transform.getTransform().getTranslation().setY(-px);
+        transform.getTransform().getTranslation().setZ(-(py - 63.0));
 
         double cy = Math.cos(-yawRad * 0.5);
         double sy = Math.sin(-yawRad * 0.5);
@@ -402,9 +403,10 @@ public class PointCloudPublisher extends BaseComposableNode {
         double qy = cr * sp * cy + sr * cp * sy;
         double qz = cr * cp * sy - sr * sp * cy;
 
-        transform.getTransform().getRotation().setX(qx);
-        transform.getTransform().getRotation().setY(qy);
-        transform.getTransform().getRotation().setZ(qz);
+        // Inverse quaternion (conjugate): negate x,y,z components
+        transform.getTransform().getRotation().setX(-qx);
+        transform.getTransform().getRotation().setY(-qy);
+        transform.getTransform().getRotation().setZ(-qz);
         transform.getTransform().getRotation().setW(qw);
 
         if (tfMsg == null) {

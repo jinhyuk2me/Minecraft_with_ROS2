@@ -1,0 +1,49 @@
+[0.063s] Invoking command in '/workspace/minecraft_ros2/build/minecraft_odometry': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspace/ros2_java_ws/install/tf2_tools:/workspace/ros2_java_ws/install/examples_tf2_py:/workspace/ros2_java_ws/install/tf2_ros_py:/workspace/ros2_java_ws/install/sensor_msgs_py:/workspace/ros2_java_ws/install/ament_build_type_gradle:/opt/ros/humble /usr/bin/cmake --build /workspace/minecraft_ros2/build/minecraft_odometry -- -j12 -l12
+[0.314s] Built target ament_cmake_python_copy_minecraft_odometry
+[0.736s] running egg_info
+[0.739s] writing minecraft_odometry.egg-info/PKG-INFO
+[0.740s] writing dependency_links to minecraft_odometry.egg-info/dependency_links.txt
+[0.740s] writing top-level names to minecraft_odometry.egg-info/top_level.txt
+[0.753s] reading manifest file 'minecraft_odometry.egg-info/SOURCES.txt'
+[0.754s] writing manifest file 'minecraft_odometry.egg-info/SOURCES.txt'
+[0.821s] Built target ament_cmake_python_build_minecraft_odometry_egg
+[0.851s] Invoked command in '/workspace/minecraft_ros2/build/minecraft_odometry' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspace/ros2_java_ws/install/tf2_tools:/workspace/ros2_java_ws/install/examples_tf2_py:/workspace/ros2_java_ws/install/tf2_ros_py:/workspace/ros2_java_ws/install/sensor_msgs_py:/workspace/ros2_java_ws/install/ament_build_type_gradle:/opt/ros/humble /usr/bin/cmake --build /workspace/minecraft_ros2/build/minecraft_odometry -- -j12 -l12
+[0.882s] Invoking command in '/workspace/minecraft_ros2/build/minecraft_odometry': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspace/ros2_java_ws/install/tf2_tools:/workspace/ros2_java_ws/install/examples_tf2_py:/workspace/ros2_java_ws/install/tf2_ros_py:/workspace/ros2_java_ws/install/sensor_msgs_py:/workspace/ros2_java_ws/install/ament_build_type_gradle:/opt/ros/humble /usr/bin/cmake --install /workspace/minecraft_ros2/build/minecraft_odometry
+[0.902s] -- Install configuration: ""
+[0.904s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/pythonpath.sh
+[0.905s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/pythonpath.dsv
+[0.905s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry-0.0.0-py3.10.egg-info
+[0.905s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry-0.0.0-py3.10.egg-info/dependency_links.txt
+[0.906s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry-0.0.0-py3.10.egg-info/PKG-INFO
+[0.906s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry-0.0.0-py3.10.egg-info/top_level.txt
+[0.906s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry-0.0.0-py3.10.egg-info/SOURCES.txt
+[0.908s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry
+[0.908s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry/sensor_synchronizer.py
+[0.908s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry/odometry_converter.py
+[0.908s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry/__init__.py
+[0.908s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry/dummy_imu_publisher.py
+[0.992s] Listing '/workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry'...
+[0.992s] Compiling '/workspace/minecraft_ros2/install/minecraft_odometry/local/lib/python3.10/dist-packages/minecraft_odometry/odometry_converter.py'...
+[1.000s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/lib/minecraft_odometry/odometry_converter
+[1.002s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/lib/minecraft_odometry/sensor_synchronizer
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry//launch
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry//launch/cartographer_slam.launch.py
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry//config
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry//config/odometry_params.yaml
+[1.003s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry//config/cartographer_3d.lua
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/ament_index/resource_index/package_run_dependencies/minecraft_odometry
+[1.003s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/ament_index/resource_index/parent_prefix_path/minecraft_odometry
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/ament_prefix_path.sh
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/ament_prefix_path.dsv
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/path.sh
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/environment/path.dsv
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/local_setup.bash
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/local_setup.sh
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/local_setup.zsh
+[1.004s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/local_setup.dsv
+[1.005s] -- Installing: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/package.dsv
+[1.005s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/ament_index/resource_index/packages/minecraft_odometry
+[1.005s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/cmake/minecraft_odometryConfig.cmake
+[1.005s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/cmake/minecraft_odometryConfig-version.cmake
+[1.005s] -- Up-to-date: /workspace/minecraft_ros2/install/minecraft_odometry/share/minecraft_odometry/package.xml
+[1.007s] Invoked command in '/workspace/minecraft_ros2/build/minecraft_odometry' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspace/ros2_java_ws/install/tf2_tools:/workspace/ros2_java_ws/install/examples_tf2_py:/workspace/ros2_java_ws/install/tf2_ros_py:/workspace/ros2_java_ws/install/sensor_msgs_py:/workspace/ros2_java_ws/install/ament_build_type_gradle:/opt/ros/humble /usr/bin/cmake --install /workspace/minecraft_ros2/build/minecraft_odometry

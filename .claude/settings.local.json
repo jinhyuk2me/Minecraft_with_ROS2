@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ros2 topic list:*)",
+      "Bash(ros2 topic hz:*)",
+      "Bash(ros2 node:*)",
+      "Bash(ros2 topic info:*)",
+      "Bash(ros2 log level get:*)",
+      "Bash(mkdir:*)",
+      "Bash(colcon build:*)",
+      "Bash(source:*)",
+      "Bash(ros2 run:*)",
+      "Bash(chmod:*)",
+      "Bash(python3:*)",
+      "Bash(apt:*)",
+      "Bash(apt install:*)",
+      "Bash(ros2 launch:*)",
+      "Bash(ros2 topic echo:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

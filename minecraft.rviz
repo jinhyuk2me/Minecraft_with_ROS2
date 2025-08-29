@@ -47,7 +47,7 @@ Visualization Manager:
         Z: -1.600000023841858
       Plane: XY
       Plane Cell Count: 10
-      Reference Frame: player
+      Reference Frame: map
       Value: true
     - Class: rviz_default_plugins/Axes
       Enabled: true
@@ -57,7 +57,7 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz_default_plugins/Image
-      Enabled: true
+      Enabled: false
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -72,7 +72,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/TF
       Enabled: true
-      Frame Timeout: 15
+      Frame Timeout: 30
       Frames:
         All Enabled: true
       Marker Scale: 5
@@ -82,7 +82,7 @@ Visualization Manager:
       Show Names: true
       Tree:
         {}
-      Update Interval: 0
+      Update Interval: 0.1
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
@@ -95,7 +95,7 @@ Visualization Manager:
       Class: rviz_default_plugins/PointCloud2
       Color: 255; 255; 255
       Color Transformer: RGB8
-      Decay Time: 0
+      Decay Time: 0.5
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
@@ -105,23 +105,44 @@ Visualization Manager:
       Name: PointCloud2
       Position Transformer: XYZ
       Selectable: true
-      Size (Pixels): 3
+      Size (Pixels): 2
       Size (m): 0.10000000149011612
       Style: Flat Squares
       Topic:
-        Depth: 5
+        Depth: 50
         Durability Policy: Volatile
-        Filter size: 10
+        Filter size: 100
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /player/pointcloud
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Alpha: 0.7
+      Class: rviz_default_plugins/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map_updates
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: player
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -180,7 +201,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.009999999776482582
       Pitch: 0.40979743003845215
-      Target Frame: player
+      Target Frame: base_link
       Value: Orbit (rviz_default_plugins)
       Yaw: 5.163586616516113
     Saved: ~
