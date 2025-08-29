@@ -1,4 +1,5 @@
 -- Cartographer 3D configuration for Minecraft with Point Cloud
+-- PURE MAPPING MODE: Only generates maps, does NOT publish localization TF transforms
 include "map_builder.lua"
 include "trajectory_builder.lua"
 
@@ -7,12 +8,12 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "base_link", 
-  published_frame = "base_link",  -- Publish in base_link frame (mapping-only mode)
+  published_frame = "base_link",  -- Pure mapping: publish base_link directly (no localization)
   odom_frame = "odom",
-  provide_odom_frame = false,  -- Don't publish any TF transforms
+  provide_odom_frame = false,  -- CRITICAL: Don't publish odom frame TF
   publish_frame_projected_to_2d = false,
-  use_pose_extrapolator = false,  -- Disable pose extrapolation for mapping-only
-  use_odometry = true,  -- Use our ground truth odometry for mapping
+  use_pose_extrapolator = true,  -- Enable pose extrapolation for smoother tracking
+  use_odometry = true,  -- Use our ground truth odometry for mapping ONLY
   use_nav_sat = false,
   use_landmarks = false,
   num_laser_scans = 0,
@@ -23,11 +24,11 @@ options = {
   submap_publish_period_sec = 0.3,
   pose_publish_period_sec = 5e-3,
   trajectory_publish_period_sec = 30e-3,
-  rangefinder_sampling_ratio = 0.5,
-  odometry_sampling_ratio = 1.,
-  fixed_frame_pose_sampling_ratio = 1.,
-  imu_sampling_ratio = 1.,
-  landmarks_sampling_ratio = 1.,
+  rangefinder_sampling_ratio = 1.0,
+  odometry_sampling_ratio = 1.0,
+  fixed_frame_pose_sampling_ratio = 1.0,
+  imu_sampling_ratio = 1.0,
+  landmarks_sampling_ratio = 1.0,
 }
 
 -- Use 3D SLAM with point clouds
@@ -52,16 +53,21 @@ TRAJECTORY_BUILDER_3D.low_resolution_adaptive_voxel_filter.max_range = 50.
 -- IMU settings (relaxed for static/slow movement)
 TRAJECTORY_BUILDER_3D.imu_gravity_time_constant = 10.
 
--- Motion filter to handle slow movement in Minecraft
-TRAJECTORY_BUILDER_3D.motion_filter.max_time_seconds = 0.5
-TRAJECTORY_BUILDER_3D.motion_filter.max_distance_meters = 0.1
-TRAJECTORY_BUILDER_3D.motion_filter.max_angle_radians = math.rad(0.5)
+-- Motion filter adjusted for corridor navigation
+TRAJECTORY_BUILDER_3D.motion_filter.max_time_seconds = 5.
+TRAJECTORY_BUILDER_3D.motion_filter.max_distance_meters = 0.2
+TRAJECTORY_BUILDER_3D.motion_filter.max_angle_radians = math.rad(1.)
 
--- Mapping-only mode: disable loop closure for pure mapping
+-- Enable SLAM with loop closure for better corridor mapping (MAPPING ONLY)
 MAP_BUILDER.use_trajectory_builder_3d = true
-POSE_GRAPH.optimize_every_n_nodes = 0  -- Disable pose graph optimization
-POSE_GRAPH.constraint_builder.sampling_ratio = 0.0  -- Disable loop closure constraints
-POSE_GRAPH.constraint_builder.global_localization_min_score = 1.0  -- Disable global localization
+POSE_GRAPH.optimize_every_n_nodes = 90  -- Enable pose graph optimization every 90 nodes
+POSE_GRAPH.constraint_builder.sampling_ratio = 0.003  -- Enable loop closure constraints  
+POSE_GRAPH.constraint_builder.global_localization_min_score = 0.55  -- Enable global localization
+
+-- PURE MAPPING MODE: Disable localization corrections
+MAP_BUILDER.pose_graph_odometry_motion_filter.max_time_seconds = 99999.0  -- Effectively disable odometry corrections
+MAP_BUILDER.pose_graph_odometry_motion_filter.max_distance_meters = 99999.0
+MAP_BUILDER.pose_graph_odometry_motion_filter.max_angle_radians = 99999.0
 
 -- Submap parameters for Minecraft environment
 TRAJECTORY_BUILDER_3D.submaps.high_resolution = 0.1

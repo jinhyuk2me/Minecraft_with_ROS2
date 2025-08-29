@@ -7,6 +7,9 @@ import rclpy.time
 import threading
 from collections import deque
 import time
+from tf2_ros import TransformListener, Buffer
+import tf2_sensor_msgs
+from rclpy.duration import Duration
 
 class SensorSynchronizerV2(Node):
     def __init__(self):
@@ -49,6 +52,10 @@ class SensorSynchronizerV2(Node):
         self.global_counter = 0
         self.last_timestamp = None
         self.counter_lock = threading.Lock()
+        
+        # TF listener for coordinate transformation
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
         
         # Processing timer - process buffered messages every 10ms
         self.process_timer = self.create_timer(0.01, self.process_buffer)
@@ -117,13 +124,14 @@ class SensorSynchronizerV2(Node):
             self.message_buffer.clear()
     
     def process_pointcloud(self, msg):
-        """Process and republish pointcloud with synchronized timestamp"""
+        """Process and republish pointcloud in base_link frame for SLAM"""
         sync_time = self.get_synchronized_timestamp(msg.header.stamp)
         
-        # Create synchronized message
+        # For SLAM, keep pointcloud in base_link frame (sensor frame)
+        # Don't transform to odom frame - let Cartographer handle the mapping
         sync_msg = PointCloud2()
         sync_msg.header.stamp = sync_time.to_msg()
-        sync_msg.header.frame_id = 'base_link'
+        sync_msg.header.frame_id = 'base_link'  # Keep in sensor frame for SLAM
         sync_msg.height = msg.height
         sync_msg.width = msg.width
         sync_msg.fields = msg.fields
@@ -133,7 +141,6 @@ class SensorSynchronizerV2(Node):
         sync_msg.data = msg.data
         sync_msg.is_dense = msg.is_dense
         
-        # Publish synchronized message
         self.pointcloud_pub.publish(sync_msg)
     
     def process_imu(self, msg):

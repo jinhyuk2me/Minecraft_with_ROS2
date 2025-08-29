@@ -124,54 +124,24 @@ class SensorSynchronizerV2(Node):
             self.message_buffer.clear()
     
     def process_pointcloud(self, msg):
-        """Process and republish pointcloud transformed to odom frame"""
+        """Process and republish pointcloud in base_link frame for SLAM"""
         sync_time = self.get_synchronized_timestamp(msg.header.stamp)
         
-        try:
-            # Transform pointcloud from base_link to odom frame
-            # This makes the pointcloud fixed in the environment
-            transform = self.tf_buffer.lookup_transform(
-                'odom',           # target frame (환경 고정)
-                'base_link',      # source frame (센서)
-                sync_time,        # time
-                timeout=Duration(seconds=0.1)
-            )
-            
-            # Create synchronized message with original data but updated timestamp
-            temp_msg = PointCloud2()
-            temp_msg.header.stamp = sync_time.to_msg()
-            temp_msg.header.frame_id = 'base_link'
-            temp_msg.height = msg.height
-            temp_msg.width = msg.width
-            temp_msg.fields = msg.fields
-            temp_msg.is_bigendian = msg.is_bigendian
-            temp_msg.point_step = msg.point_step
-            temp_msg.row_step = msg.row_step
-            temp_msg.data = msg.data
-            temp_msg.is_dense = msg.is_dense
-            
-            # Transform to odom frame
-            transformed_msg = tf2_sensor_msgs.do_transform_cloud(temp_msg, transform)
-            
-            # Publish transformed message (now in odom frame)
-            self.pointcloud_pub.publish(transformed_msg)
-            
-        except Exception as e:
-            self.get_logger().debug(f'Failed to transform pointcloud: {e}')
-            # Fallback: publish original with base_link frame
-            sync_msg = PointCloud2()
-            sync_msg.header.stamp = sync_time.to_msg()
-            sync_msg.header.frame_id = 'base_link'
-            sync_msg.height = msg.height
-            sync_msg.width = msg.width
-            sync_msg.fields = msg.fields
-            sync_msg.is_bigendian = msg.is_bigendian
-            sync_msg.point_step = msg.point_step
-            sync_msg.row_step = msg.row_step
-            sync_msg.data = msg.data
-            sync_msg.is_dense = msg.is_dense
-            
-            self.pointcloud_pub.publish(sync_msg)
+        # For SLAM, keep pointcloud in base_link frame (sensor frame)
+        # Don't transform to odom frame - let Cartographer handle the mapping
+        sync_msg = PointCloud2()
+        sync_msg.header.stamp = sync_time.to_msg()
+        sync_msg.header.frame_id = 'base_link'  # Keep in sensor frame for SLAM
+        sync_msg.height = msg.height
+        sync_msg.width = msg.width
+        sync_msg.fields = msg.fields
+        sync_msg.is_bigendian = msg.is_bigendian
+        sync_msg.point_step = msg.point_step
+        sync_msg.row_step = msg.row_step
+        sync_msg.data = msg.data
+        sync_msg.is_dense = msg.is_dense
+        
+        self.pointcloud_pub.publish(sync_msg)
     
     def process_imu(self, msg):
         """Process and republish IMU with synchronized timestamp"""

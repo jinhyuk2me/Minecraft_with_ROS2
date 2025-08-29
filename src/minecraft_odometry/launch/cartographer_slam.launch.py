@@ -68,13 +68,14 @@ def generate_launch_description():
         parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
     
-    # Static transform: map -> odom (identity)
-    map_to_odom_transform = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='map_to_odom_broadcaster',
-        arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
-    )
+    # Static transform: map -> odom (identity) - REMOVED
+    # Now handled by odometry_converter for better integration
+    # map_to_odom_transform = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher', 
+    #     name='map_to_odom_broadcaster',
+    #     arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
+    # )
     
     # Static transform: base_link -> player (identity)
     base_link_to_player_transform = Node(
@@ -121,7 +122,7 @@ def generate_launch_description():
         config_file_arg,
         odometry_converter_node,
         sensor_synchronizer_node,
-        map_to_odom_transform,
+        # map_to_odom_transform,  # REMOVED: now handled by odometry_converter
         base_link_to_player_transform,
         cartographer_node,
         occupancy_grid_node
