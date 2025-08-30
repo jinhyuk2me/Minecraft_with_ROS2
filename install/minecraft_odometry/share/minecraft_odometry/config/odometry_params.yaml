@@ -35,4 +35,9 @@ odometry_converter:
     # Mode 2: ros_yaw = minecraft_yaw + pi/2 (+90 degrees)
     # Mode 3: ros_yaw = minecraft_yaw - pi/2 (-90 degrees)
     # Mode 4: ros_yaw = minecraft_yaw + pi (+180 degrees)
-    yaw_conversion_mode: 1
+    yaw_conversion_mode: 0
+    
+    # Use absolute orientation instead of relative orientation
+    # This ensures consistent coordinate mapping regardless of starting position
+    use_relative_orientation: false
+    use_minecraft_axis_conversion: true
