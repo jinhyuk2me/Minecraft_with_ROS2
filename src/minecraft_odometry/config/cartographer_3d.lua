@@ -27,7 +27,7 @@ options = {
   rangefinder_sampling_ratio = 1.0,
   odometry_sampling_ratio = 1.0,
   fixed_frame_pose_sampling_ratio = 1.0,
-  imu_sampling_ratio = 1.0,
+  imu_sampling_ratio = 0.1,  -- Reduce IMU influence due to discrete angular velocity
   landmarks_sampling_ratio = 1.0,
 
   -- CRITICAL: TF 퍼블리시를 완전히 비활성화하는 설정
