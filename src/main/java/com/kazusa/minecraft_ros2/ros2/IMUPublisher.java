@@ -53,6 +53,7 @@ public class IMUPublisher extends BaseComposableNode  {
             lastVz = vz;
 
             double currentYaw = Math.toRadians(player.getYRot());
+            double currentPitch = Math.toRadians(player.getXRot());
             double yawVel = (currentYaw - lastYaw) / dt;  
             lastYaw = currentYaw;
 
@@ -60,8 +61,28 @@ public class IMUPublisher extends BaseComposableNode  {
             double accY = ax * Math.cos(currentYaw) - az * Math.sin(currentYaw);
             double accZ = ay - 9.80665;
 
+            // Calculate orientation quaternion from yaw and pitch
+            double cy = Math.cos(currentYaw * 0.5);
+            double sy = Math.sin(currentYaw * 0.5);
+            double cp = Math.cos(currentPitch * 0.5);
+            double sp = Math.sin(currentPitch * 0.5);
+            double cr = 1.0; // roll = 0
+            double sr = 0.0;
+
+            double qw = cr * cp * cy + sr * sp * sy;
+            double qx = sr * cp * cy - cr * sp * sy;
+            double qy = cr * sp * cy + sr * cp * sy;
+            double qz = cr * cp * sy - sr * sp * cy;
+
             message.getHeader().setStamp(Time.now());
             message.getHeader().setFrameId("player");
+            
+            // Set orientation quaternion - CRITICAL for Cartographer
+            message.getOrientation().setW(qw);
+            message.getOrientation().setX(qx);
+            message.getOrientation().setY(qy);
+            message.getOrientation().setZ(qz);
+            
             message.getLinearAcceleration().setX(accX);
             message.getLinearAcceleration().setY(accY);
             message.getLinearAcceleration().setZ(accZ);

@@ -56,7 +56,7 @@ class OdometryConverter(Node):
                 ('scale_factor', 1.0),               # 좌표계 크기 조절 팩터
                 ('use_relative_orientation', True),  # 상대방향 사용 여부 - base_link는 플레이어 기준이어야 함
                 ('use_minecraft_axis_conversion', True), # Minecraft 좌표계를 ROS 좌표계로 변환 여부
-                ('yaw_conversion_mode', 1)               # Yaw 변환 모드 (1,2,3,4 - 실험적 테스트용)
+                ('yaw_conversion_mode', 3)               # Yaw 변환 모드 - Mode 3이 올바른 ROS 표준
             ]
         )
 

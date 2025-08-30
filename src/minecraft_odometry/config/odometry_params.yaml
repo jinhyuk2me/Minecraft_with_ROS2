@@ -28,3 +28,16 @@ odometry_converter:
     
     # Scale factor for position (1.0 = no scaling)
     scale_factor: 1.0
+    
+    # Yaw conversion mode for coordinate frame transformation
+    # Mode 0: ros_yaw = minecraft_yaw (no conversion)
+    # Mode 1: ros_yaw = -minecraft_yaw (direction inversion) 
+    # Mode 2: ros_yaw = minecraft_yaw + pi/2 (+90 degrees)
+    # Mode 3: ros_yaw = minecraft_yaw - pi/2 (-90 degrees)
+    # Mode 4: ros_yaw = minecraft_yaw + pi (+180 degrees)
+    yaw_conversion_mode: 0
+    
+    # Use absolute orientation instead of relative orientation
+    # This ensures consistent coordinate mapping regardless of starting position
+    use_relative_orientation: false
+    use_minecraft_axis_conversion: true
