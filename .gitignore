@@ -33,3 +33,7 @@ node_modules
 
 # macOS
 .DS_Store
+
+# ROS2 build artifacts
+log/
+install/

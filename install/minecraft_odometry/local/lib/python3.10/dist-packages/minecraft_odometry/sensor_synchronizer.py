@@ -10,6 +10,7 @@ import time
 from tf2_ros import TransformListener, Buffer
 import tf2_sensor_msgs
 from rclpy.duration import Duration
+import struct
 
 class SensorSynchronizerV2(Node):
     def __init__(self):
@@ -127,8 +128,12 @@ class SensorSynchronizerV2(Node):
         """Process and republish pointcloud in base_link frame for SLAM"""
         sync_time = self.get_synchronized_timestamp(msg.header.stamp)
         
-        # For SLAM, keep pointcloud in base_link frame (sensor frame)
-        # Don't transform to odom frame - let Cartographer handle the mapping
+        # Transform pointcloud from Minecraft coordinate system to ROS coordinate system
+        # Minecraft: X=East/West, Y=Up/Down, Z=North/South
+        # ROS: X=Forward/Back, Y=Left/Right, Z=Up/Down
+        # Transformation: Minecraft(X,Y,Z) -> ROS(Z,X,Y)
+        transformed_data = self.transform_pointcloud_coordinates(msg.data, msg.point_step)
+        
         sync_msg = PointCloud2()
         sync_msg.header.stamp = sync_time.to_msg()
         sync_msg.header.frame_id = 'base_link'  # Keep in sensor frame for SLAM
@@ -138,7 +143,7 @@ class SensorSynchronizerV2(Node):
         sync_msg.is_bigendian = msg.is_bigendian
         sync_msg.point_step = msg.point_step
         sync_msg.row_step = msg.row_step
-        sync_msg.data = msg.data
+        sync_msg.data = transformed_data
         sync_msg.is_dense = msg.is_dense
         
         self.pointcloud_pub.publish(sync_msg)
@@ -178,6 +183,39 @@ class SensorSynchronizerV2(Node):
         
         # Publish synchronized message
         self.imu_pub.publish(sync_msg)
+    
+    def transform_pointcloud_coordinates(self, data, point_step):
+        """Transform pointcloud coordinates from Minecraft to ROS coordinate system"""
+        # PointCloud2 data format: x(float32), y(float32), z(float32), rgb(float32)
+        # Each point is 16 bytes (4 floats)
+        
+        if point_step != 16:
+            self.get_logger().warn(f"Unexpected point_step: {point_step}, expected 16")
+            return data
+        
+        num_points = len(data) // point_step
+        transformed_data = []
+        
+        for i in range(num_points):
+            offset = i * point_step
+            point_bytes = data[offset:offset + point_step]
+            
+            # Unpack: x, y, z, rgb
+            x, y, z, rgb = struct.unpack('<ffff', bytes(point_bytes))
+            
+            # Coordinate transformation: Minecraft(x,y,z) -> ROS(z,x,y)
+            # Minecraft X (East/West) -> ROS Y (Left/Right)
+            # Minecraft Y (Up/Down) -> ROS Z (Up/Down)  
+            # Minecraft Z (North/South) -> ROS X (Forward/Back)
+            ros_x = z
+            ros_y = x
+            ros_z = y
+            
+            # Pack back to bytes
+            transformed_point = struct.pack('<ffff', ros_x, ros_y, ros_z, rgb)
+            transformed_data.extend(transformed_point)
+        
+        return transformed_data
 
 def main(args=None):
     rclpy.init(args=args)

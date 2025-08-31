@@ -15,7 +15,8 @@
       "Bash(apt:*)",
       "Bash(apt install:*)",
       "Bash(ros2 launch:*)",
-      "Bash(ros2 topic echo:*)"
+      "Bash(ros2 topic echo:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
