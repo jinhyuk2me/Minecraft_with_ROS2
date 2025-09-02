@@ -1,1 +1,0 @@
-"""Minecraft Odometry package for ROS2 SLAM integration."""

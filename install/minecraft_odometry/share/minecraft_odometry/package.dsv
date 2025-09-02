@@ -1,8 +1,0 @@
-source;share/minecraft_odometry/hook/cmake_prefix_path.ps1
-source;share/minecraft_odometry/hook/cmake_prefix_path.dsv
-source;share/minecraft_odometry/hook/cmake_prefix_path.sh
-source;share/minecraft_odometry/local_setup.bash
-source;share/minecraft_odometry/local_setup.dsv
-source;share/minecraft_odometry/local_setup.ps1
-source;share/minecraft_odometry/local_setup.sh
-source;share/minecraft_odometry/local_setup.zsh
