@@ -3,7 +3,7 @@
 </p>
 
 
-# 🎮 Minecraft with ROS2
+# 🎮 Minecraft with ROS2 & SLAM
 
 Minecraft를 ROS2 & microROS 환경에서 활용한 로봇 제어 및 SLAM 실습 및 실험 프로젝트입니다.
 
