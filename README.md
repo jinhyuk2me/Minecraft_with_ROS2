@@ -62,7 +62,12 @@ Minecraft를 ROS2 & microROS 환경에서 활용한 로봇 제어 및 SLAM 실�
 - Cartographer를 사용한 Minecraft 맵의 실시간 2D 맵 생성
 - 3D LiDAR 센서 시뮬레이션을 통한 환경 인식
 
-## 파일 구조
+>[!Note]
+> 3D pointcloud 데이터를 Minecraft로부터 받아오는 데 걸리는 시간지연으로 인해 빠른 각속도로 회전하는 경우 맵 생성이 정상적으로 되지 않음을 확인하였습니다.<br>
+> 본 프로젝트에서는 오픈소스로 구현된 툴을 사용하였기 때문에 전진/후진만 수행하여 맵을 생성하였습니다.  
+
+
+## 5. 파일 구조
 
 ```
 ├── src/                    # Minecraft MOD 소스코드
@@ -75,11 +80,11 @@ Minecraft를 ROS2 & microROS 환경에서 활용한 로봇 제어 및 SLAM 실�
 └── run/                    # Minecraft 실행 환경
 ```
 
-## 참고사항
+## 6. 참고사항
 
 이 프로젝트는 실험 및 실습 목적으로 제작되었습니다.
 
-## 라이센스
+## 7. 라이센스
 
 이 프로젝트는 [Apache License 2.0](LICENSE.txt) 하에 배포됩니다.
 
