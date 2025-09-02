@@ -1,42 +1,66 @@
-# ROS2_Minecraft
+<p align="center">
+  <img src="https://github.com/jinhyuk2me/Minecraft_with_ROS2/blob/main/assets/images/banner.png?raw=true" width="100%"/>
+</p>
 
-Minecraft를 ROS 2 환경에서 활용한 로봇 제어 및 SLAM 실험 프로젝트입니다.
 
-## 프로젝트 개요
+# 🎮 Minecraft with ROS2
 
-이 프로젝트는 다음과 같은 실험을 진행했습니다:
+Minecraft를 ROS2 & microROS 환경에서 활용한 로봇 제어 및 SLAM 실습 및 실험 프로젝트입니다.
 
-- **🎮 조이스틱 제어**: 물리적 조이스틱을 통한 Minecraft 캐릭터 원격 조종
-- **📡 micro-ROS 통신**: ESP32와 micro-ROS를 활용한 임베디드 시스템 연동
-- **🗺️ SLAM 맵핑**: Cartographer를 사용한 Minecraft 환경에서의 실시간 맵 생성
+- 2025년 8월 29일 ~ 2025년 9월 1일(총 4일)
 
-## 하드웨어 구성
+## 1. 프로젝트 개요
 
+이 프로젝트에서 다음과 같은 실습을 진행했습니다:
+
+<p align="center">
+  <img src="https://github.com/jinhyuk2me/Minecraft_with_ROS2/blob/main/assets/images/point_cloud.gif?raw=true" width="100%"/>
+</p>
+
+- **조이스틱 제어**: 물리적 조이스틱을 통한 Minecraft 캐릭터 원격 조종
+- **micro-ROS 통신**: ESP32와 micro-ROS를 활용한 임베디드 시스템 연동
+- **SLAM 맵핑**: Cartographer를 사용한 Minecraft 환경에서의 실시간 맵 생성
+
+## 2. 하드웨어 
 - **조이스틱**: 캐릭터 움직임 제어용
 - **ESP32**: micro-ROS 노드 실행 및 센서 데이터 처리
 - **PC**: Minecraft 클라이언트 및 ROS 2 노드 실행
 
-## 시스템 요구사항
+## 3. 기술 스택
 
-- **OS**: Ubuntu 22.04
-- **ROS 2**: Humble
-- **Java**: JDK 17+
-- **Minecraft**: Forge 1.20.1
+| 분류 | 사용 기술 |
+|------|-----------|
+| **Robotics & SLAM** | [![ROS2](https://img.shields.io/badge/ROS2-22314E?style=for-the-badge&logo=ros&logoColor=white)](https://docs.ros.org/en/humble/index.html) [![Cartographer](https://img.shields.io/badge/Cartographer-FF6B35?style=for-the-badge&logo=googleearthengine&logoColor=white)](https://google-cartographer-ros.readthedocs.io/) ![micro-ROS](https://img.shields.io/badge/micro--ROS-1E88E5?style=for-the-badge) |
+| **Game & Development** | [![Minecraft](https://img.shields.io/badge/Minecraft-62B47A?style=for-the-badge&logo=minecraft&logoColor=white)](https://www.minecraft.net/) ![Forge](https://img.shields.io/badge/Forge-1.20.1-orange?style=for-the-badge) [![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)](https://gradle.org/) |
+| **Embedded & Hardware** | [![ESP32](https://img.shields.io/badge/ESP32-E7352C?style=for-the-badge&logo=espressif&logoColor=white)](https://www.espressif.com/en/products/socs/esp32) ![FreeRTOS](https://img.shields.io/badge/FreeRTOS-007ACC?style=for-the-badge) |
+| **Languages & Runtime** | [![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.java.net/) [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/) [![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://isocpp.org/) |
+| **Environment & Tools** | [![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://ubuntu.com/) [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/) [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) [![CMake](https://img.shields.io/badge/CMake-064F8C?style=for-the-badge&logo=cmake&logoColor=white)](https://cmake.org/) |
+| **Visualization & GUI** | [![RViz2](https://img.shields.io/badge/RViz2-22314E?style=for-the-badge&logo=ros&logoColor=white)](https://docs.ros.org/en/humble/Tutorials/Intermediate/RViz/RViz-User-Guide/RViz-User-Guide.html) |
 
-
-## 주요 실험 결과
-
-### 🎮 조이스틱 제어
-- ROS 2 Joy 메시지를 통한 실시간 캐릭터 제어
-- 다양한 이동 모드 및 카메라 각도 조정 가능
-
-### 🗺️ SLAM 맵핑  
-- Cartographer를 사용한 Minecraft 맵의 실시간 2D/3D 맵 생성
-- LiDAR 센서 시뮬레이션을 통한 환경 인식
+## 4. 주요 기능
 
 ### 📡 임베디드 연동
+<p align="center">
+  <img src="https://github.com/jinhyuk2me/Minecraft_with_ROS2/blob/main/assets/images/joystick.jpg?raw=true" width="100%"/>
+</p>
+
 - ESP32 기반 micro-ROS 노드와의 실시간 통신
-- 센서 데이터 수집 및 액추에이터 제어
+- IMU 및 3D LiDAR 센서 데이터 수집
+
+### 🎮 조이스틱 제어
+<p align="center">
+  <img src="https://github.com/jinhyuk2me/Minecraft_with_ROS2/blob/main/assets/images/driving.gif?raw=true" width="100%"/>
+</p>
+
+- ROS2 `/cmd_vel` 메시지를 통한 실시간 캐릭터 제어
+
+### 🗺️ SLAM 맵핑
+<p align="center">
+  <img src="https://github.com/jinhyuk2me/Minecraft_with_ROS2/blob/main/assets/images/slam_cartographer.gif?raw=true" width="100%"/>
+</p>
+
+- Cartographer를 사용한 Minecraft 맵의 실시간 2D 맵 생성
+- 3D LiDAR 센서 시뮬레이션을 통한 환경 인식
 
 ## 파일 구조
 
@@ -50,14 +74,6 @@ Minecraft를 ROS 2 환경에서 활용한 로봇 제어 및 SLAM 실험 프로�
 ├── docs/                   # 프로젝트 문서
 └── run/                    # Minecraft 실행 환경
 ```
-
-## 기술 스택
-
-- **ROS 2 Humble**: 로봇 미들웨어
-- **Cartographer**: SLAM 라이브러리  
-- **micro-ROS**: 임베디드 ROS 2
-- **Minecraft Forge**: MOD 개발 프레임워크
-- **ESP32**: 마이크로컨트롤러
 
 ## 참고사항
 
