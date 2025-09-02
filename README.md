@@ -22,6 +22,25 @@ Minecraft를 ROS2 & microROS 환경에서 활용한 로봇 제어 및 SLAM 실�
 - **SLAM 맵핑**: Cartographer를 사용한 Minecraft 환경에서의 실시간 맵 생성
 
 ## 2. 하드웨어 
+
+```mermaid
+flowchart LR
+  %% ===== High-level 5 boxes =====
+  J[Joystick]
+  E[ESP32<br/>(micro-ROS)]
+  M[Minecraft MOD<br/>(Forge)]
+  R[ROS2 Core<br/>(Bridge · Cartographer · ros2 bag)]
+  V[RViz2]
+
+  %% ===== Data flow =====
+  J -- /cmd_vel --> M
+  M -- /odom --> R
+  M -- /points --> R
+  E -- /imu --> R
+  R -- /map · /tf --> V
+```
+
+
 - **조이스틱**: 캐릭터 움직임 제어용
 - **ESP32**: micro-ROS 노드 실행 및 센서 데이터 처리
 - **PC**: Minecraft 클라이언트 및 ROS 2 노드 실행
